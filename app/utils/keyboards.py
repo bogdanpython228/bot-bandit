@@ -13,6 +13,7 @@ main = ReplyKeyboardMarkup(keyboard=[
 # Работы
 work = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='грузчик')],
+    [KeyboardButton(text='электрик')],
     [KeyboardButton(text='таксист')],
     [KeyboardButton(text='назад')]
 ],
@@ -42,6 +43,22 @@ take = ReplyKeyboardMarkup(keyboard=[
 ],
                            one_time_keyboard=True,
                            resize_keyboard=True)
+
+# Электрик
+electrician = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='идти')],
+    [KeyboardButton(text='назад')]
+],
+                             one_time_keyboard=True,
+                             resize_keyboard=True)     
+
+# Ремонтирование проводки
+wiring = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='чинить')],
+    [KeyboardButton(text='назaд')]
+],
+                             one_time_keyboard=True,
+                             resize_keyboard=True)
 
 # Бизнес
 business = ReplyKeyboardMarkup(keyboard=[

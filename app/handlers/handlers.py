@@ -101,6 +101,33 @@ async def refusal(message: Message):
                          reply_markup=kb.taxi_driver)
 
     
+@router.message(F.text == 'электрик')
+async def electrician(message: Message):
+    user = await rq.get_user(message.from_user.id)
+    
+    await message.answer(f'{user.name}, тебе нужно идти к дому чинить проводку', 
+                         reply_markup=kb.electrician)
+    
+    
+@router.message(F.text == 'идти')
+async def go(message: Message):
+    await message.answer('ты идешь к дому')
+    await sleep(5)
+
+    await message.answer('ты дошел до дома, теперь чини проводку', reply_markup=kb.wiring)
+    
+    
+@router.message(F.text == 'чинить')
+async def repair(message: Message):
+    await message.answer('ты чинишь проводку')
+    await sleep(20)
+    
+    user = rq.update_money(message.from_user.id, 3000)
+    await message.answer(f'ты починил проводку и за это получил $4.500\nТвой баланс: {user.money}')
+    await message.answer(f'{user.name}, тебе нужно идти к дому чинить проводку', 
+                         reply_markup=kb.electrician)
+    
+    
 @router.message(F.text == 'бизнесы')
 async def businesses(message: Message):
     user = await rq.get_user(message.from_user.id)
@@ -241,6 +268,14 @@ async def back(message: Message):
     user = await rq.get_user(message.from_user.id)
     await message.answer(f'Склад твоего бизнеса\nПродукты на складе: {user.business_products}',
                          reply_markup=kb.order)
+    
+    
+@router.message(F.text == 'назaд')
+async def back(message: Message):
+    user = await rq.get_user(message.from_user.id)
+    
+    await message.answer(f'{user.name}, тебе нужно идти к дому чинить проводку', 
+                         reply_markup=kb.electrician)
     
     
 @router.message(F.text == 'Нaзaд')
