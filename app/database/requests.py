@@ -150,6 +150,19 @@ async def update_business(tg_id: int):
         return user
         
         
+async def update_laptop(tg_id: int):
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.tg_id == tg_id))
+        
+        if not user:
+            return False
+        
+        user.laptop = True
+        await session.commit()
+        await session.refresh(user)
+        return user
+        
+        
 async def top_players():
     '''Показывает топ игроков по балансу'''
     async with async_session() as session:

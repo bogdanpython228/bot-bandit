@@ -21,6 +21,7 @@ class User(Base):
     tg_id: Mapped[int] = mapped_column(BigInteger)
     name: Mapped[str] = mapped_column(String(25))
     money: Mapped[int] = mapped_column(default=0)
+    laptop: Mapped[bool] = mapped_column(default=False)
     business: Mapped[str] = mapped_column(String(25), nullable=True, default=None)
     business_products: Mapped[int] = mapped_column(default=0)
     ordered_products: Mapped[int] = mapped_column(default=0)

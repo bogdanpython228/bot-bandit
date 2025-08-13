@@ -4,7 +4,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 main = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='работа')],
     #[KeyboardButton(text='казино')],
-    [KeyboardButton(text='бизнесы')],
+    [KeyboardButton(text='бизнес'), KeyboardButton(text='магазин')],
     [KeyboardButton(text='топ игроков')]
 ],
                            one_time_keyboard=True,
@@ -12,13 +12,21 @@ main = ReplyKeyboardMarkup(keyboard=[
 
 # Работы
 work = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='грузчик')],
-    [KeyboardButton(text='электрик')],
-    [KeyboardButton(text='таксист')],
+    [KeyboardButton(text='📦 грузчик')],
+    [KeyboardButton(text='⚡ электрик')],
+    [KeyboardButton(text='🚕 таксист')],
     [KeyboardButton(text='назад')]
 ],
                            one_time_keyboard=True,
                            resize_keyboard=True)
+
+work_laptop = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='📦 грузчик')],
+    [KeyboardButton(text='⚡ электрик')],
+    [KeyboardButton(text='🚕 таксист')],
+    [KeyboardButton(text='💻 хакер')],
+    [KeyboardButton(text='назад')]
+])
 
 # Грузчик
 loader = ReplyKeyboardMarkup(keyboard=[
@@ -56,6 +64,13 @@ electrician = ReplyKeyboardMarkup(keyboard=[
 wiring = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='чинить')],
     [KeyboardButton(text='назaд')]
+],
+                             one_time_keyboard=True,
+                             resize_keyboard=True)
+
+hacker = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='продолжить')],
+    [KeyboardButton(text='назад')]
 ],
                              one_time_keyboard=True,
                              resize_keyboard=True)
@@ -100,3 +115,11 @@ buy = ReplyKeyboardMarkup(keyboard=[
 ],
                           one_time_keyboard=True,
                           resize_keyboard=True)
+
+# Покупка ноутбука
+buy_laptop = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='Kупить')],
+    [KeyboardButton(text='Нaзaд')]
+],
+                                 one_time_keyboard=True,
+                                 resize_keyboard=True)

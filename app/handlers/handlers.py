@@ -4,6 +4,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from asyncio import sleep
+from random import randint
 
 import app.utils.keyboards as kb
 import app.database.requests as rq
@@ -42,15 +43,20 @@ async def statistics(message: Message, state: FSMContext):
 async def job(message: Message):
     user = await rq.get_user(message.from_user.id)
     
-    await message.answer(f'{user.name}, выбери работу на которой хочешь работать!', 
-                         reply_markup=kb.work)
+    if user.laptop == True:
+        await message.answer(f'{user.name}, выбери работу на которой хочешь работать!', 
+                             reply_markup=kb.work_laptop)
+    else:
+        await message.answer(f'{user.name}, выбери работу на которой хочешь работать!', 
+                             reply_markup=kb.work)
     
     
-@router.message(F.text == 'грузчик')
+@router.message(F.text == '📦 грузчик')
 async def loader(message: Message):
     user = await rq.get_user(message.from_user.id)
     
-    await message.answer(f'{user.name}, ты попал на склад, тебе нужно отнести коробку',
+    await message.answer(f'{user.name}, ты попал на склад, тебе нужно отнести коробку\n'
+                         'плата за 1 коробку $600-900',
                          reply_markup=kb.loader)
     
     
@@ -59,11 +65,11 @@ async def attribute(message: Message):
     await message.answer('ты относишь коробку')
     await sleep(5)
     
-    user = await rq.update_money(message.from_user.id, 900)
+    user = await rq.update_money(message.from_user.id, randint(6, 9)*100)
     await message.answer(f'ты отнес коробку, твой баланс ${user.money}', reply_markup=kb.loader)
     
     
-@router.message(F.text == 'таксист')
+@router.message(F.text == '🚕 таксист')
 async def taxi_driver(message: Message):
     user = await rq.get_user(message.from_user.id)
     
@@ -101,7 +107,7 @@ async def refusal(message: Message):
                          reply_markup=kb.taxi_driver)
 
     
-@router.message(F.text == 'электрик')
+@router.message(F.text == '⚡ электрик')
 async def electrician(message: Message):
     user = await rq.get_user(message.from_user.id)
     
@@ -122,13 +128,38 @@ async def repair(message: Message):
     await message.answer('ты чинишь проводку')
     await sleep(20)
     
-    user = rq.update_money(message.from_user.id, 3000)
-    await message.answer(f'ты починил проводку и за это получил $4.500\nТвой баланс: {user.money}')
+    user = await rq.update_money(message.from_user.id, 3000)
+    await message.answer(f'ты починил проводку и за это получил $3.000\nТвой баланс: {user.money}')
     await message.answer(f'{user.name}, тебе нужно идти к дому чинить проводку', 
                          reply_markup=kb.electrician)
     
     
-@router.message(F.text == 'бизнесы')
+@router.message(F.text == '💻 хакер')
+async def hacker(message: Message):
+    user = await rq.get_user(message.from_user.id)
+    await message.answer(f'{user.name}, ты теперь хакер!\n'
+                         'твоя цель взламывать банки, криптобиржи корпорации и всякое другое!\n'
+                         'твой заработок будет в районе $15.000 - 30.000.\nно есть шанс 20% '
+                         'что тебя поймает полиция и выдаст штраф в размере $30.000\n'
+                         'ты готов?', reply_markup=kb.hacker)
+    
+    
+@router.message(F.text == 'продолжить')
+async def continuee(message: Message):
+    await message.answer('идет процесс взлома... (займет 1 минуту)')
+    await sleep(10)
+    if randint(1, 5) == 1:
+        await message.answer('вас поймала полиция!')
+        user = await rq.update_money(message.from_user.id, -30000)
+        await message.answer(f'увы, взлом не удался и с вас сняли $30.000. ваш баланс ${user.money}')
+        await message.answer(f'{user.name}, сделаем взлом еще раз?', reply_markup=kb.hacker)
+    else:
+        user = await rq.update_money(message.from_user.id, randint(15, 30)*1000)
+        await message.answer(f'взлом удался! твой баланс ${user.money}')
+        await message.answer(f'{user.name}, сделаем взлом еще раз?', reply_markup=kb.hacker)
+    
+    
+@router.message(F.text == 'бизнес')
 async def businesses(message: Message):
     user = await rq.get_user(message.from_user.id)
     if user.business == None: 
@@ -145,16 +176,16 @@ async def businesses(message: Message):
 @router.message(F.text == 'Каталог')
 async def catalog(message: Message):
     await message.answer_photo(photo=FSInputFile('app/photos/cafe.jpg'),
-                               caption='Бизнесы в продаже:\nКафе: $25.000',
+                               caption='Бизнесы в продаже:\nКафе: $50.000',
                                reply_markup=kb.buy)
    
    
 @router.message(F.text == 'Купить')
 async def buy(message: Message):
     user = await rq.get_user(message.from_user.id)
-    if user.money >= 25000:
+    if user.money >= 50000:
         await rq.update_business(message.from_user.id)
-        await rq.update_money(message.from_user.id, -25000)
+        await rq.update_money(message.from_user.id, -50000)
         await message.answer_photo(photo=FSInputFile('app/photos/cafe.jpg'),
                                    caption='Твой бизнес: Кафе\n'
                                    f'Продукты бизнеса: {user.business_products}\n'
@@ -200,7 +231,6 @@ async def order_to_warehouse(message: Message):
         await message.answer(f'{user.name}, у тебя на счету ${user.money-40000}', reply_markup=kb.main)
         minute = 60
         await sleep(minute*3)
-        #await rq.update_money(message.from_user.id, 65000)
         await rq.update_business_products(message.from_user.id)
     else:
         await message.answer('У вас не хватает денег на балансе.', reply_markup=kb.main)
@@ -209,6 +239,30 @@ async def order_to_warehouse(message: Message):
                                    f'Продукты бизнеса: {user.business_products}\n'
                                    f'Заказано продуктов: {user.ordered_products}',
                                    reply_markup=kb.business)
+      
+      
+@router.message(F.text == 'магазин')
+async def shop(message: Message):
+    user = await rq.get_user(message.from_user.id)
+    if user.laptop == True:
+        await message.answer('магазин техники пуст!')
+        await message.answer(f'{user.name}, у тебя на счету ${user.money}', reply_markup=kb.main)
+    else:
+        await message.answer('Открылся новый магазин техники!\nНоутбук: $40.000', 
+                             reply_markup=kb.buy_laptop)
+      
+      
+@router.message(F.text == 'Kупить')
+async def buy_laptop(message: Message):
+    user = await rq.get_user(message.from_user.id)
+    if user.money >= 40000:
+        await rq.update_laptop(message.from_user.id)
+        await rq.update_money(message.from_user.id, -40000)
+        await message.answer('вы купили нотбук!\n(проверьте список работ!)')
+        await message.answer(f'{user.name}, у тебя на счету ${user.money}', reply_markup=kb.main)
+    else:    
+        await message.answer('У вас не хватает денег')
+        await message.answer(f'{user.name}, у тебя на счету ${user.money}', reply_markup=kb.main)
       
       
 @router.message(F.text == 'топ игроков')
