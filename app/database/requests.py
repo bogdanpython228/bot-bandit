@@ -151,6 +151,14 @@ async def update_business(tg_id: int):
         
         
 async def update_laptop(tg_id: int):
+    '''Добавляет наличие ноутбука пользователю.
+    
+    Args:
+        tg_id: телеграм ID пользователя
+        
+    Returns:
+        True если все прошло успешно, False если такого пользователя нет
+    '''
     async with async_session() as session:
         user = await session.scalar(select(User).where(User.tg_id == tg_id))
         

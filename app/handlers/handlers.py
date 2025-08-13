@@ -145,7 +145,7 @@ async def hacker(message: Message):
     
     
 @router.message(F.text == 'продолжить')
-async def continuee(message: Message):
+async def continue_hack(message: Message):
     await message.answer('идет процесс взлома... (займет 1 минуту)')
     await sleep(60)
     if randint(1, 5) == 1:
