@@ -147,7 +147,7 @@ async def hacker(message: Message):
 @router.message(F.text == 'продолжить')
 async def continuee(message: Message):
     await message.answer('идет процесс взлома... (займет 1 минуту)')
-    await sleep(10)
+    await sleep(60)
     if randint(1, 5) == 1:
         await message.answer('вас поймала полиция!')
         user = await rq.update_money(message.from_user.id, -30000)
