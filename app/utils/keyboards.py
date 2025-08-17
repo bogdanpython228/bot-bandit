@@ -63,7 +63,7 @@ electrician = ReplyKeyboardMarkup(keyboard=[
 # Ремонтирование проводки
 wiring = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='чинить')],
-    [KeyboardButton(text='назaд')]
+    [KeyboardButton(text='назад')]
 ],
                              one_time_keyboard=True,
                              resize_keyboard=True)
@@ -77,9 +77,9 @@ hacker = ReplyKeyboardMarkup(keyboard=[
 
 # Бизнес
 business = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Склад')],
-    [KeyboardButton(text='Продать')],
-    [KeyboardButton(text='Нaзaд')]
+    [KeyboardButton(text='склад')],
+    [KeyboardButton(text='продать')],
+    [KeyboardButton(text='назад')]
 ],
                                one_time_keyboard=True,
                                resize_keyboard=True)
@@ -87,39 +87,23 @@ business = ReplyKeyboardMarkup(keyboard=[
 # Заказ продуктов
 order = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text='заказать')],
-    [KeyboardButton(text='нaзaд')]
+    [KeyboardButton(text='назад')]
 ],
                             one_time_keyboard=True,
                             resize_keyboard=True)
 
-# Подтверждение заказа продуктов
-warehouse = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Заказать')],
-    [KeyboardButton(text='Назад')]
-],
-                                one_time_keyboard=True,
-                                resize_keyboard=True)
-
 # Каталог
 catalog = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Каталог')],
-    [KeyboardButton(text='Нaзaд')]
+    [KeyboardButton(text='каталог')],
+    [KeyboardButton(text='назад')]
 ],
                               one_time_keyboard=True,
                               resize_keyboard=True)
 
 # Купить
 buy = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Купить')],
-    [KeyboardButton(text='Нaзaд')]
+    [KeyboardButton(text='купить')],
+    [KeyboardButton(text='назад')]
 ],
                           one_time_keyboard=True,
                           resize_keyboard=True)
-
-# Покупка ноутбука
-buy_laptop = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Kупить')],
-    [KeyboardButton(text='Нaзaд')]
-],
-                                 one_time_keyboard=True,
-                                 resize_keyboard=True)

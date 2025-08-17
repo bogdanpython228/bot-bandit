@@ -24,6 +24,26 @@ async def add_user(tg_id: int, name: str):
         return True
     
     
+async def delete_user(tg_id: int):
+    '''Удаляет пользователя из БД.
+    
+    Args:
+        tg_id: телеграм ID пользователя
+        
+    Returns:
+        True если все прошло успешно, False если такого пользователя нет
+    '''
+    async with async_session() as session:
+        user = await session.scalar(select(User).where(User.tg_id == tg_id))
+        
+        if not user:
+            return False
+        
+        await session.delete(user)
+        await session.commit()
+        return True
+    
+    
 async def get_user(tg_id: int):
     '''Получает данные пользователя.
     
@@ -122,7 +142,7 @@ async def update_money_business(tg_id: int):
         if not user:
             return False
         
-        user.money += user.business_products * 3
+        user.money += user.business_products * 2.5
         user.business_products = 0
         await session.commit()
         await session.refresh(user)
@@ -174,7 +194,7 @@ async def update_laptop(tg_id: int):
 async def top_players():
     '''Показывает топ игроков по балансу'''
     async with async_session() as session:
-        result = await session.scalars(select(User).order_by(desc(User.money)).limit(5))
+        result = await session.scalars(select(User).order_by(desc(User.money)).limit(10))
         return result.all()
     
     
